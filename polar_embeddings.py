@@ -1,3 +1,4 @@
+from turtle import color
 import streamlit as st
 from pandas.core.frame import DataFrame
 import plotly.express as px
@@ -5,41 +6,161 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from tqdm import tqdm_notebook as tqdm
-import time
 from random import shuffle
 from nltk.corpus import wordnet
-import numpy as np
 import plotly.graph_objs as go
 from sklearn.decomposition import PCA
-import random
-import json
-import os
-
-from gensim.scripts.glove2word2vec import glove2word2vec
-from gensim.test.utils import datapath, get_tmpfile
-
-from gensim.test.utils import datapath
-
+from sklearn.cluster import DBSCAN
 
 
 st.title("Word Embeddings for Business Entities")
-option = st.sidebar.selectbox('Choose one from below',('Choose your own antonym pairs', 'Get top 5 antonym pairs based on the company ticker', 'PCA'))
+option = st.sidebar.selectbox('Choose one from below',('Choose your own antonym pairs',  'Location wise distribution of companies', 'PCA', 'PCA with clustering'))
 st.write('You selected:', option)
 
 polar_embedding_company = pd.read_csv('C:\\Users\\bhura\\Downloads\\POLAR-GloVeWiki-bus-antonyms-inter.csv')
 fortune_company = pd.read_csv('C:\\Users\\bhura\\Downloads\\Fortune Global 500 companies.csv',encoding= 'unicode_escape')
 polar_list_company_name = polar_embedding_company.iloc[:,0]
 
-import pandas as pd
 
 company = pd.read_csv('C:\\Users\\bhura\\Downloads\\International_Fortune_Google.csv')
 name_list = company['0']
 new_df= pd.read_csv('C:\\Users\\bhura\\Downloads\\POLAR-GoogleNews-bus-antonyms-inter.csv')
+company_df = new_df
+common_df = pd.read_csv('C:\\Users\\bhura\\Downloads\\POLAR-GoogleNews-bus-antonyms-common.csv')
 
-import plotly
-import numpy as np
-import plotly.graph_objs as go
-from sklearn.decomposition import PCA
+if(option == 'PCA with clustering'):
+
+    dimension = st.sidebar.selectbox(
+     "Select the dimension of the visualization",
+     ('2D', '3D'))
+
+    if(dimension == '2D'):
+
+        df_cluster=new_df.loc[:,new_df.columns!='Unnamed: 0']
+        eps = st.sidebar.slider('Select epsilon', 0.0, 1.0, 0.4)
+        min_samples = st.sidebar.slider('Select minimum samples', 0, 10, 5)
+        dbscan = DBSCAN(metric='cosine', eps=0.4, min_samples=5)#high eps low samples only clusters common, 
+        cluster_labels = dbscan.fit_predict(df_cluster)
+
+        two_dim = PCA(random_state=0).fit_transform(df_cluster)[:,:2]
+        df_cluster[['two_dim1','two_dim2']]=two_dim.tolist()
+        df_cluster['cluster']=cluster_labels
+        df_cluster['Unnamed: 0']=new_df['Unnamed: 0']
+
+        def display_pca_scatterplot_2D(model):
+            data = []
+            for i in range(-1,model['cluster'].max()+1):
+                
+                word_vectors = model.loc[model['cluster']==i]
+                scat_text = word_vectors['Unnamed: 0']
+                two_dim = word_vectors[['two_dim1','two_dim2']].to_numpy()
+                trace = go.Scatter(
+                    x = two_dim[:,0], 
+                    y = two_dim[:,1],  
+                    text = scat_text[:],
+                    name = 'Cluster'+str(i+2),
+                    textposition = "top center",
+                    textfont_size = 10,#20
+                    mode = 'markers+text',
+                    marker = {
+                        'size': 10,#10
+                        'opacity': 0.8,
+                        'color': i
+                    }
+                )  
+
+                data.append(trace)
+
+            # Configure the layout
+
+            layout = go.Layout(
+                margin = {'l': 0, 'r': 0, 'b': 0, 't': 0},
+                showlegend=True,
+                legend=dict(
+                x=1,
+                y=0.5,
+                font=dict(
+                    family="Courier New",
+                    size=25,
+                    color="black"
+                )),
+                font = dict(
+                    family = " Courier New ",
+                    size = 15),
+                autosize = False,
+                width = 900,
+                height = 500
+                )
+
+
+            plot_figure = go.Figure(data = data, layout = layout)      
+            st.plotly_chart(plot_figure)
+
+        display_pca_scatterplot_2D(df_cluster[:])
+
+    if(dimension == '3D'):
+        df_cluster=new_df.loc[:,new_df.columns!='Unnamed: 0']
+        eps = st.sidebar.slider('Select epsilon', 0.0, 1.0, 0.4)
+        min_samples = st.sidebar.slider('Select minimum samples', 0, 10, 5)
+        dbscan = DBSCAN(metric='cosine', eps=0.3, min_samples=3)
+        cluster_labels = dbscan.fit_predict(df_cluster)
+
+        three_dim = PCA(random_state=0).fit_transform(df_cluster)[:,:3]
+        df_cluster[['three_dim1','three_dim2','three_dim3']]=three_dim.tolist()
+        df_cluster['cluster']=cluster_labels
+        df_cluster['Unnamed: 0']=new_df['Unnamed: 0']
+
+        def display_pca_scatterplot_3D(model):
+            data = []
+            for i in range(-1,model['cluster'].max()+1):
+                
+                word_vectors = model.loc[model['cluster']==i]
+                scat_text = word_vectors['Unnamed: 0']
+                three_dim = word_vectors[['three_dim1','three_dim2','three_dim3']].to_numpy()
+                trace = go.Scatter3d(
+                    x = three_dim[:,0], 
+                    y = three_dim[:,1],
+                    z = three_dim[:,2],
+                    text = scat_text[:],
+                    name = 'Cluster'+str(i+2),
+                    textposition = "top center",
+                    textfont_size = 10,#20
+                    mode = 'markers+text',
+                    marker = {
+                        'size': 10,#10
+                        'opacity': 0.8,
+                        'color': i
+                    }
+                )      
+                data.append(trace)
+
+            # Configure the layout
+
+            layout = go.Layout(
+                margin = {'l': 0, 'r': 0, 'b': 0, 't': 0},
+                showlegend=True,
+                legend=dict(
+                x=1,
+                y=0.5,
+                font=dict(
+                    family="Courier New",
+                    size=25,
+                    color="black"
+                )),
+                font = dict(
+                    family = " Courier New ",
+                    size = 15),
+                autosize = False,
+                width = 1000,
+                height = 700
+                )
+
+
+            plot_figure = go.Figure(data = data, layout = layout)
+            st.plotly_chart(plot_figure)
+
+        display_pca_scatterplot_3D(df_cluster[:])
+
 
 def display_pca_scatterplot_3D(model, user_input=None, words=None, label=None, color_map=None, topn=25, sample=10):
 
@@ -61,7 +182,7 @@ def display_pca_scatterplot_3D(model, user_input=None, words=None, label=None, c
             mode = 'markers+text',
             marker = {
                 'size': 10,
-                'opacity': 0.8,
+                # 'opacity': 0.8,
                 'color': 2
             }
 
@@ -81,11 +202,12 @@ def display_pca_scatterplot_3D(model, user_input=None, words=None, label=None, c
         name = 'input words',
         textposition = "top center",
         textfont_size = 20,
+        # color = "black",
         mode = 'markers+text',
         marker = {
             'size': 10,
             'opacity': 1,
-            'color': 'black'
+            'color': "black"
         }
         )
 
@@ -193,55 +315,30 @@ def display_pca_scatterplot_2D(model, user_input=None, words=None, label=None, c
 
 Antonym_list = [('product', 'service'),
 ('essential', 'luxury'),
-('technical', 'natural'),
-('renewable', 'nonrenewable'),
-('advertising', 'rumour'), 
 ('lease', 'sell'),
 ('demand', 'supply'),
-('wfh', 'wfo'),
 ('child', 'childless'),
-('remote', 'physical'),
-('salary', 'goodies'),
-('store', 'online'),
 ('details', 'outlines'),
-('stakeholders', 'spectators'),
 ('isolating', 'social'),
 ('goal', 'task'),
-('employees', 'consultant'),
 ('cost', 'revenue'),
 ('seasonal', 'temporary'),
 ('alliance', 'proprietorship'),
 ('loss', 'profit'),
-('integrity', 'corruption'),
 ('international', 'local'),
 ('corporate', 'individual'),
-('order', 'disorder'),
-('solution', 'problem'),
 ('manager', 'worker'),
 ('diversity', 'uniformity'),
-('public', 'private'),
-('strategic', 'impulsive'),
-('innovator', 'follower'),
 ('bankruptcy', 'prosperity'),
-('growth', 'decline'),
 ('sustainable', 'unsustainable'),
 ('family', 'work'),
 ('criminal', 'rightful'),
-('financial', 'artisanal'),
-('supplier', 'purchaser'),
-('commitment', 'rejection'),
-('professional', 'amateur'),
-('independent', 'dependent'),
-('digital', 'analogue'),
+('commitment', 'rejection'),\
 ('marketing', 'secret'),
-('secure', 'risky'),
 ('longterm', 'shortterm'), 
-('responsible', 'neglect'), 
 ('ethical', 'unethical'), 
 ('beneficial', 'harmful'), 
 ('diversity', 'uniformity'), 
-('trust', 'mistrust'), 
-('teamwork', 'individualism'), 
 ('opportunity', 'threat'), 
 ('innovative', 'traditional'), 
 ('flexible', 'rigid'), 
@@ -249,34 +346,80 @@ Antonym_list = [('product', 'service'),
 ('feminine', 'masculine'), 
 ('globally', 'locally'), 
 ('insiders', 'outsiders'), 
-('foreigners', 'natives'), 
-('minorities', 'majority'),
-('transparency', 'obscurity'),
+('foreigners', 'natives'),
 ('discrimination', 'impartial'),
 ('credible', 'deceptive'),
 ('environment', 'pollution'),
 ('pressure', 'relax'),
-('growth', 'decline'),
 ('satisfied', 'unsatisfied'),
 ('diplomatic', 'undiplomatic'),
-('motivate', 'demotivate'),
 ('communicative', 'uncommunicative'),
 ('connected', 'disconnected'),
 ('autonomous', 'micromanagement'),
-('nurture', 'neglect'),
-('progressive', 'conservative'),
 ('rewarding', 'unrewarding'),
 ('bias', 'unbias'),
 ('challenge', 'obscurity'),
-('collaborated', 'siloed'),
-('outdated', 'modern'),
-('effortless', 'demanding'),
 ('economic', 'overpriced'),
-('widespread', 'local'),
-('freedom', 'captive'),
 ('consistent', 'inconsistent')]
 
-if option == 'PCA':
+if option == "Location wise distribution of companies":
+    antonym_pair1 = st.sidebar.selectbox(
+     "Select the Antonymn pair",
+    Antonym_list
+    )
+
+    character_of_company = antonym_pair1[1]
+    single_character_of_company = character_of_company.capitalize()
+
+    company_location=[]
+    fortune_company_name = []
+    company_index=0
+    counter=0
+    for index, row in fortune_company.iterrows(): 
+        s = row['Company']
+        s = s.lower()
+        s = s.replace(" ","")   
+        if s == polar_list_company_name[company_index]:    
+            company_index = company_index+1
+            company_location.append(row['Location'])
+            fortune_company_name.append(row['Company'])
+            counter=counter+1
+
+    character_1 = '{}'.format(''.join(map(str, antonym_pair1)))
+    character_1_list = polar_embedding_company[str(character_1)]
+
+    data = {
+        'Company Name' : fortune_company_name,    
+        'Location': company_location,      
+        character_of_company : character_1_list}
+
+    df = pd.DataFrame(data)
+    new_df = df
+
+    # This will find the total number of companies in our data frame based on Location
+    total_company_list_based_on_loc_df = new_df.groupby('Location').count()
+    total_company_list_based_on_loc=total_company_list_based_on_loc_df['Company Name']
+
+    # This will count the number of companies having the value greater than 0 
+    subset_df = new_df[new_df[character_of_company] > 0]
+    company_inclined_to_right_polar_df = subset_df.groupby('Location').count()
+    company_inclined_to_right_polar = company_inclined_to_right_polar_df['Company Name']
+
+    name1 = "Non "+single_character_of_company+" Companies"
+    name2 = single_character_of_company+" Companies"
+    new_data ={
+        name1 : total_company_list_based_on_loc,
+        name2 : company_inclined_to_right_polar
+    }
+    final_df = pd.DataFrame(new_data)
+    final_df = final_df.fillna(0)
+    final_df[name1] = final_df[name1] - final_df[name2]
+
+    fig = px.bar(final_df)
+    fig.update_layout(title_text='Location wise distribution of companies', title_x=0.5)
+    st.plotly_chart(fig)
+
+if option == 'PCA':  
 
     dimension = st.sidebar.selectbox(
      "Select the dimension of the visualization",
@@ -378,17 +521,14 @@ if option == 'Get top 5 antonym pairs based on the company ticker':
     if submit:
         st.write("You submitted the request")
 
-from PIL import Image
+# from PIL import Image
 
 # tickers = df.columns
 # tickers = tickers[2:]
 
-
-
-
-def load_image(image_file):
-	img = Image.open(image_file)
-	return img
+# def load_image(image_file):
+# 	img = Image.open(image_file)
+# 	return img
 
 # if ticker in tickers:
 #     df = df.loc[df['tickers'] == ticker]
