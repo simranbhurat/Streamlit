@@ -5,7 +5,6 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from tqdm import tqdm_notebook as tqdm
-from random import shuffle
 from nltk.corpus import wordnet
 import plotly.graph_objs as go
 from sklearn.decomposition import PCA
