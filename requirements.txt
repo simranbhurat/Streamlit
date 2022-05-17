@@ -4,5 +4,4 @@ pandas
 numpy
 sklearn
 tqdm
-random
 gsheetsdb
