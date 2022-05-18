@@ -12,9 +12,6 @@ from sklearn.decomposition import PCA
 from sklearn.cluster import DBSCAN
 from gsheetsdb import connect
 import plotly
-import colorlover as cl
-import plotly.offline as py
-import plotly.graph_objs as go
             
 Antonym_list = ['commitment rejection', 'manager worker', 'feminine masculine', 'globally locally',
  'family work', 'stakeholders spectators', 'discrimination impartial', 'challenge obscurity', 'seasonal temporary',
