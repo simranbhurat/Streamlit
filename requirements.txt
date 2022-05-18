@@ -6,3 +6,5 @@ sklearn
 tqdm
 gsheetsdb
 nltk
+color
+tkinter
