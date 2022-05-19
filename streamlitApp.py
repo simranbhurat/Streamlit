@@ -1,5 +1,4 @@
 from operator import index
-from tkinter import CENTER
 import streamlit as st
 from pandas.core.frame import DataFrame
 import plotly.express as px
