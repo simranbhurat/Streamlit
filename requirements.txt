@@ -6,3 +6,4 @@ sklearn
 tqdm
 gsheetsdb
 nltk
+colorlover
