@@ -83,7 +83,7 @@ if(check == 'Bias'):
         # st.write(country)
 
         country = st.sidebar.multiselect('Select Upto 5 countries', country)
-        st.write(country)
+#         st.write(country)
 
         country_gnews = [i+"_gnews" for i in country]
         country_gnews = gnews.loc[country_gnews]
