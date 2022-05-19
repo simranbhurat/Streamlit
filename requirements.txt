@@ -6,4 +6,3 @@ sklearn
 tqdm
 gsheetsdb
 nltk
-tkinter
