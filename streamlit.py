@@ -404,7 +404,7 @@ if (check == 'Hofstede'):
     Hofstede_dimensions = st.sidebar.selectbox('Check for', ('Power Distance', 'Individualism vs Collectivism','Masculinity vs Femininity',
                                                              'Long Term vs Short Term Orientation','Indulgence vs Restraint','Uncertainty Avoidance'))
 
-    polar_url = "https: // docs.google.com / spreadsheets / d / 1Tjk72bE1CKWmXnmdrxdAyM0MvmEtWCshINJKRUadAJU / edit?usp = sharing"
+    polar_url = "https://docs.google.com/spreadsheets/d/1Tjk72bE1CKWmXnmdrxdAyM0MvmEtWCshINJKRUadAJU/edit?usp=sharing"
     fortune_500_url = "https://docs.google.com/spreadsheets/d/1k1jIYhrfipRQkU4wzsPpoTuar-MvVlFd7my2qA2aOds/edit?usp=sharing"
     hofstede_url = "https://docs.google.com/spreadsheets/d/1EtYAgilX8CGbGZ-dsLW6rNp-Dqn_ikeT4zvhULOfgKM/edit?usp=sharing"
 
