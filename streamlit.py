@@ -29,7 +29,7 @@ import plotly.graph_objs as go
 import seaborn as sns
 
 Antonym_list = ['commitment rejection', 'manager worker', 'feminine masculine', 'globally locally',
-                'family work', 'stakeholders spectators', 'discrimination impartial', 'challenge obscurity',
+                'family work', 'discrimination impartial', 'challenge obscurity',
                 'seasonal temporary',
                 'alliance proprietorship', 'public private', 'details outlines', 'responsible neglect',
                 'marketing secret', 'trust mistrust', 'independent dependent', 'integrity corruption',
