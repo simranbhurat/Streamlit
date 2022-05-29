@@ -687,7 +687,7 @@ if (check == 'Hofstede'):
 
     if(correlation):
         # Below are the correlation plot 
-        fig1 = plt.figure(figsize = (7,5))
+        fig1 = plt.figure(figsize = (8,7))
         plt.subplot(2, 2, 1)
         sns.regplot(x=merged_df[dim_ranking], y=merged_df["Polar Rank R"])
         plt.subplot(2, 2, 2)
