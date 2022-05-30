@@ -295,16 +295,27 @@ st.title("Word Embeddings for Business Entities")
 check = st.sidebar.selectbox('Check for', ('Bias', 'Hofstede', 'PCA'))
  
 if (check == 'Bias'):
-    company_or_country = st.sidebar.selectbox('Check for', ('Companies', 'Countries'))
+    # CSS to inject contained in a string
+    hide_dataframe_row_index = """
+                <style>
+                .row_heading.level0 {display:none}
+                .blank {display:none}
+                </style>
+                """
+
+    # Inject CSS with Markdown
+    st.markdown(hide_dataframe_row_index, unsafe_allow_html=True)
+
+    company_or_country = st.sidebar.selectbox('Check for', ('Companies', 'Countries', 'P-value'))
     if (company_or_country == 'Countries'):
         antonym_pair = st.sidebar.selectbox("Select the Antonymn pair", Antonym_list)
 
         antonym_pair = str(antonym_pair.replace(" ", "_"))
 
-        gnews_url = "https://docs.google.com/spreadsheets/d/1wtUfzJOPIuwVPRuOwZ1zU-JFQF5MQ2a_CnQDKGfPOyo/edit?usp=sharing"
-        wiki_url = "https://docs.google.com/spreadsheets/d/12mfEh9o9fyop-ChZ1fUt7_5uDK2DNQHkQhsgvpHkiao/edit?usp=sharing"
-        twitter_url = "https://docs.google.com/spreadsheets/d/1_0G95RXRVpu1sjrlGsL74yf1pEqStqv9P0DpbWxrCqo/edit?usp=sharing"
-        reddit_url = "https://docs.google.com/spreadsheets/d/1c2o_9RhF1j-WO2rXItt8748DXHbM7YRXIuuSRln5scc/edit?usp=sharing"
+        gnews_url = "https://docs.google.com/spreadsheets/d/15I-OwV1vV6lB2SMJgKIS_auPfj0o7nbpOau6geqET2Q/edit?usp=sharing"
+        wiki_url = "https://docs.google.com/spreadsheets/d/1zhgZFDLcci0DzCBPJMEY1nQP107536ReBCRZKjXYGxw/edit?usp=sharing"
+        twitter_url = "https://docs.google.com/spreadsheets/d/19s5djluHPiKIk-2I0JSm019gz48cGVqKYzC8Q0dfeGY/edit?usp=sharing"
+        reddit_url = "https://docs.google.com/spreadsheets/d/1l4gwQujj6C-EgF9ci7TYdPwNqe5Ef_HXxrj7TuretxM/edit?usp=sharing"
 
         conn = connect()
         gnews_rows = conn.execute(f'SELECT * FROM "{gnews_url}"')
@@ -417,10 +428,10 @@ if (check == 'Bias'):
 
         antonym_pair = str(antonym_pair.replace(" ", "_"))
 
-        gnews_url = "https://docs.google.com/spreadsheets/d/1tntSqC-U1e8wL0Tt1k5bw-uc5G717N6Et9QtXJEdMe0/edit?usp=sharing"
-        wiki_url = "https://docs.google.com/spreadsheets/d/1fNwrr1dzwot1tiRL7uM34U3qg-epqk1BIyWY4m_Yx9E/edit?usp=sharing"
-        twitter_url = "https://docs.google.com/spreadsheets/d/1AMuAYCvOM5bmqMmvP6dCEr9xVqdsqk_MojjG4cJSAjo/edit?usp=sharing"
-        reddit_url = "https://docs.google.com/spreadsheets/d/1a5a2yuQ4B_Lq-oO6g6ex0m0gf4UsL4j8_A-Zg3d2uxg/edit?usp=sharing"
+        gnews_url = "https://docs.google.com/spreadsheets/d/1coqpsqHM2LxP0H3Xg89QmJgulW3gy98gKw6EnLP65oo/edit?usp=sharing"
+        wiki_url = "https://docs.google.com/spreadsheets/d/17wkBZudbjD94dJ5tGH65Oz-sr0yeO8Y9NKYW4bZM7Ok/edit?usp=sharing"
+        twitter_url = "https://docs.google.com/spreadsheets/d/1eNuZJXiSDQXGoax5ls_qFOuWHhUBoLwZH2vAn3xQtt4/edit?usp=sharing"
+        reddit_url = "https://docs.google.com/spreadsheets/d/17hxKvAxzrrSWfxplsWLygO4D1flYdAciXKq4NKLUZHc/edit?usp=sharing"
 
         conn = connect()
         gnews_rows = conn.execute(f'SELECT * FROM "{gnews_url}"')
@@ -531,6 +542,77 @@ if (check == 'Bias'):
 
         fig = go.Figure(data=[trace0, trace1, trace2, trace3], layout=layout)
         st.plotly_chart(fig)
+
+    elif(company_or_country == 'P-value'):
+        test = st.sidebar.radio("Check T-test on",('pre-trained models', 'U.S and Non-U.S companies'))
+
+        if(test == 'pre-trained models'):
+            pvalue_url = "https://docs.google.com/spreadsheets/d/18HUCezv01mrWT0ntEF076ULbQoLw_FaZfd4qQyDXwEw/edit?usp=sharing"
+
+            conn = connect()
+            pvalue = conn.execute(f'SELECT * FROM "{pvalue_url}"')
+            pvalue = pd.DataFrame(pvalue)
+
+            test1 = st.sidebar.radio("Pre-trained Models",('Reddit & Wikipedia', 'Reddit & Twitter', 'Reddit & Google News', 'Google News & Twitter', 'Google News & Wikipedia', 'Twitter & Wikipedia'))
+            
+            if(test1 == 'Reddit & Wikipedia'):
+                data = pvalue.iloc[:,0:2]
+                data = data.dropna()
+                st.write(data)
+
+            elif(test1 == 'Reddit & Twitter'):
+                data = pvalue.iloc[:,[0,2]]
+                data = data.dropna()
+                st.write(data)
+            
+            elif(test1 == 'Reddit & Google News'):
+                data = pvalue.iloc[:,[0,3]]
+                data = data.dropna()
+                st.write(data)  
+
+            elif(test1 == 'Google News & Twitter'):
+                data = pvalue.iloc[:,[0,4]]
+                data = data.dropna()
+                st.write(data)  
+
+            elif(test1 == 'Google News & Wikipedia'):
+                data = pvalue.iloc[:,[0,5]]
+                data = data.dropna()
+                st.write(data)   
+
+            elif(test1 == 'Twitter & Wikipedia'):
+                data = pvalue.iloc[:,[0,6]]
+                data = data.dropna()
+                st.write(data)  
+
+        elif(test == 'U.S and Non-U.S companies'):
+            pvalue_url = "https://docs.google.com/spreadsheets/d/1sTOikbKuelgIFewL2SYaOgaXcLG7W-UCJ-jrcHDbQYU/edit?usp=sharing"
+
+            conn = connect()
+            pvalue = conn.execute(f'SELECT * FROM "{pvalue_url}"')
+            pvalue = pd.DataFrame(pvalue)
+
+            test1 = st.sidebar.radio("Pre-trained Models",('Reddit', 'Twitter', 'Google News',  'Wikipedia'))
+
+            if(test1 == 'Reddit'):
+                data = pvalue.iloc[:,0:2]
+                data = data.dropna()
+                st.dataframe(data)
+
+            elif(test1 == 'Twitter'):
+                data = pvalue.iloc[:,[0,2]]
+                data = data.dropna()
+                st.write(data)
+
+            elif(test1 == 'Google News'):
+                data = pvalue.iloc[:,[0,3]]
+                data = data.dropna()
+                st.write(data)
+
+            elif(test1 == 'Wikipedia'):
+                data = pvalue.iloc[:,[0,4]]
+                data = data.dropna()
+                st.write(data)
 
 if (check == 'Hofstede'):
     Hofstede_dimensions = st.sidebar.selectbox('Check for', ('Power Distance', 'Individualism vs Collectivism','Masculinity vs Femininity', 'Long Term vs Short Term Orientation','Indulgence vs Restraint','Uncertainty Avoidance'))
@@ -687,7 +769,7 @@ if (check == 'Hofstede'):
 
     if(correlation):
         # Below are the correlation plot 
-        fig1 = plt.figure(figsize = (8,7))
+        fig1 = plt.figure(figsize = (10,7))
         plt.subplot(2, 2, 1)
         sns.regplot(x=merged_df[dim_ranking], y=merged_df["Polar Rank R"])
         plt.subplot(2, 2, 2)
@@ -734,7 +816,7 @@ if (check == 'Hofstede'):
     eval_df.head()
 
     corr = merged_df.corr()
-    corr.style.background_gradient(cmap='coolwarm', axis=None, vmin=-1, vmax=1).highlight_null(null_color='#f1f1f1').set_precision(2)
+    st.write(corr.style.background_gradient(cmap='coolwarm', axis=None, vmin=-1, vmax=1).highlight_null(null_color='#f1f1f1').set_precision(2))
 
 if(check == 'PCA'):
     pre_trained = st.sidebar.selectbox("Select a pre-trained model", ('Wikipedia','Google News', 'Reddit', 'Twitter' ))
