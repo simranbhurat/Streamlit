@@ -558,32 +558,32 @@ if (check == 'Bias'):
             if(test1 == 'Reddit & Wikipedia'):
                 data = pvalue.iloc[:,0:2]
                 data = data.dropna()
-                st.write(data)
+                st.dataframe(data.style.format({'reddit_wiki': '{:.2E}'}))
 
             elif(test1 == 'Reddit & Twitter'):
                 data = pvalue.iloc[:,[0,2]]
                 data = data.dropna()
-                st.write(data)
+                st.dataframe(data.style.format({'reddit_twitter': '{:.2E}'}))
             
             elif(test1 == 'Reddit & Google News'):
                 data = pvalue.iloc[:,[0,3]]
                 data = data.dropna()
-                st.write(data)  
+                st.dataframe(data.style.format({'reddit_gnews': '{:.2E}'}))  
 
             elif(test1 == 'Google News & Twitter'):
                 data = pvalue.iloc[:,[0,4]]
                 data = data.dropna()
-                st.write(data)  
+                st.dataframe(data.style.format({'gnews_twitter': '{:.2E}'}))  
 
             elif(test1 == 'Google News & Wikipedia'):
                 data = pvalue.iloc[:,[0,5]]
                 data = data.dropna()
-                st.write(data)   
+                st.dataframe(data.style.format({'gnews_wiki': '{:.2E}'}))  
 
             elif(test1 == 'Twitter & Wikipedia'):
                 data = pvalue.iloc[:,[0,6]]
                 data = data.dropna()
-                st.write(data)  
+                st.dataframe(data.style.format({'twitter_wiki': '{:.2E}'}))  
 
         elif(test == 'U.S and Non-U.S companies'):
             pvalue_url = "https://docs.google.com/spreadsheets/d/1sTOikbKuelgIFewL2SYaOgaXcLG7W-UCJ-jrcHDbQYU/edit?usp=sharing"
@@ -597,22 +597,23 @@ if (check == 'Bias'):
             if(test1 == 'Reddit'):
                 data = pvalue.iloc[:,0:2]
                 data = data.dropna()
-                st.dataframe(data)
+                st.dataframe(data.style.format({'reddit': '{:.2E}'}))
+
 
             elif(test1 == 'Twitter'):
                 data = pvalue.iloc[:,[0,2]]
                 data = data.dropna()
-                st.write(data)
+                st.dataframe(data.style.format({'twitter': '{:.2E}'}))
 
             elif(test1 == 'Google News'):
                 data = pvalue.iloc[:,[0,3]]
                 data = data.dropna()
-                st.write(data)
+                st.dataframe(data.style.format({'gnews': '{:.2E}'}))
 
             elif(test1 == 'Wikipedia'):
                 data = pvalue.iloc[:,[0,4]]
                 data = data.dropna()
-                st.write(data)
+                st.dataframe(data.style.format({'wiki': '{:.2E}'}))
 
 if (check == 'Hofstede'):
     Hofstede_dimensions = st.sidebar.selectbox('Check for', ('Power Distance', 'Individualism vs Collectivism','Masculinity vs Femininity', 'Long Term vs Short Term Orientation','Indulgence vs Restraint','Uncertainty Avoidance'))
