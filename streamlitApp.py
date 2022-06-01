@@ -616,7 +616,7 @@ if (check == 'Bias'):
                 st.dataframe(data.style.format({'wiki': '{:.2E}'}))
 
 if (check == 'Hofstede'):
-    Hofstede_dimensions = st.sidebar.selectbox('Check for', ('Power Distance', 'Individualism vs Collectivism','Masculinity vs Femininity', 'Long Term vs Short Term Orientation','Indulgence vs Restraint','Uncertainty Avoidance'))
+    Hofstede_dimensions = st.sidebar.selectbox('Select a Hofstede Dimension', ('Power Distance', 'Individualism vs Collectivism','Masculinity vs Femininity', 'Long Term vs Short Term Orientation','Indulgence vs Restraint','Uncertainty Avoidance'))
 
     new_df_url = "https://docs.google.com/spreadsheets/d/1CzCINusz2boi7ziroOT0jlQnzvXWlMxs0x6Yv8hSzA8/edit?usp=sharing"
     fortune_500_company_url = "https://docs.google.com/spreadsheets/d/1sATMYArLD6e6tggHjAFlifkojVqssRRM4UvjI8z1AGc/edit?usp=sharing"
@@ -823,7 +823,7 @@ if(check == 'PCA'):
     pre_trained = st.sidebar.selectbox("Select a pre-trained model", ('Wikipedia','Google News', 'Reddit', 'Twitter' ))
 
     if(pre_trained == 'Wikipedia'):
-        antonyms = st.sidebar.selectbox("Select a antonym set", ('Business Antonyms','Original Polar Antonyms' ))
+        antonyms = st.sidebar.selectbox("Select antonym list", ('Business Antonyms','Original Polar Antonyms' ))
         if(antonyms == 'Business Antonyms'):
             company_url = "https://docs.google.com/spreadsheets/d/1svpPZ2zw7G_iQsSTuogRAFgReO8X_CrHp7fL1uitLBo/edit?usp=sharing"
             common_words = st.sidebar.selectbox("Add common words", ('100 Common words','1000 common words' ))
@@ -899,7 +899,7 @@ if(check == 'PCA'):
 
     new_df=pd.concat([common, company_url])  
     df_cluster=new_df.loc[:,new_df.columns!='name']          
-    dimension = st.sidebar.selectbox("Select Dimensions", ('2D','3D' ))
+    dimension = st.sidebar.selectbox("Select PCA Dimensions", ('2D','3D' ))
 
     if(dimension == '2D'):
         eps = st.sidebar.slider('Select epsilon', 0.0, 1.0, 0.4)
