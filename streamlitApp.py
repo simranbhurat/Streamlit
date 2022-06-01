@@ -420,7 +420,7 @@ if (check == 'Bias'):
         )
 
         fig = go.Figure(data=[trace0, trace1, trace2, trace3], layout=layout)
-        st.plotly_chart(fig)
+        st.plotly_chart(fig, height=800)
 
     elif (company_or_country == 'Companies'):
 
