@@ -550,7 +550,7 @@ if (check == 'Bias'):
         test = st.sidebar.radio("Check T-test on",('pre-trained models', 'U.S and Non-U.S companies'))
 
         if(test == 'pre-trained models'):
-            pvalue_url = "https://docs.google.com/spreadsheets/d/18HUCezv01mrWT0ntEF076ULbQoLw_FaZfd4qQyDXwEw/edit?usp=sharing"
+            pvalue_url = "https://docs.google.com/spreadsheets/d/1yjGO4Zq2pNail2k_0vRctXnXfS_9vy-hjd88v7MwosM/edit?usp=sharing"
 
             conn = connect()
             pvalue = conn.execute(f'SELECT * FROM "{pvalue_url}"')
@@ -559,64 +559,64 @@ if (check == 'Bias'):
             test1 = st.sidebar.radio("Pre-trained Models",('Reddit & Wikipedia', 'Reddit & Twitter', 'Reddit & Google News', 'Google News & Twitter', 'Google News & Wikipedia', 'Twitter & Wikipedia'))
             
             if(test1 == 'Reddit & Wikipedia'):
-                data = pvalue.iloc[:,0:2]
+                data = pvalue.iloc[:,0:3]
                 data = data.dropna()
-                st.dataframe(data.style.format({'reddit_wiki': '{:.2E}'}))
+                st.dataframe(data.style.format({'reddit_wiki_p_value': '{:.2E}'}))
 
             elif(test1 == 'Reddit & Twitter'):
-                data = pvalue.iloc[:,[0,2]]
+                data = pvalue.iloc[:,[0, 3, 4]]
                 data = data.dropna()
-                st.dataframe(data.style.format({'reddit_twitter': '{:.2E}'}))
+                st.dataframe(data.style.format({'reddit_twitter_p_value': '{:.2E}'}))
             
             elif(test1 == 'Reddit & Google News'):
-                data = pvalue.iloc[:,[0,3]]
+                data = pvalue.iloc[:,[0, 5, 6]]
                 data = data.dropna()
-                st.dataframe(data.style.format({'reddit_gnews': '{:.2E}'}))  
+                st.dataframe(data.style.format({'reddit_gnews_p_value': '{:.2E}'}))  
 
             elif(test1 == 'Google News & Twitter'):
-                data = pvalue.iloc[:,[0,4]]
+                data = pvalue.iloc[:,[0, 7, 8]]
                 data = data.dropna()
-                st.dataframe(data.style.format({'gnews_twitter': '{:.2E}'}))  
+                st.dataframe(data.style.format({'gnews_twitter_p_value': '{:.2E}'}))  
 
             elif(test1 == 'Google News & Wikipedia'):
-                data = pvalue.iloc[:,[0,5]]
+                data = pvalue.iloc[:,[0, 9, 10]]
                 data = data.dropna()
-                st.dataframe(data.style.format({'gnews_wiki': '{:.2E}'}))  
+                st.dataframe(data.style.format({'gnews_wiki_p_value': '{:.2E}'}))  
 
             elif(test1 == 'Twitter & Wikipedia'):
-                data = pvalue.iloc[:,[0,6]]
+                data = pvalue.iloc[:,[0, 11, 12]]
                 data = data.dropna()
-                st.dataframe(data.style.format({'twitter_wiki': '{:.2E}'}))  
+                st.dataframe(data.style.format({'twitter_wiki_p_value': '{:.2E}'}))  
 
         elif(test == 'U.S and Non-U.S companies'):
-            pvalue_url = "https://docs.google.com/spreadsheets/d/1sTOikbKuelgIFewL2SYaOgaXcLG7W-UCJ-jrcHDbQYU/edit?usp=sharing"
+
+            pvalue_url = "https://docs.google.com/spreadsheets/d/1CAxxPGOGaJzep7v9AoopAZetkHwz-sWXKNOfnkf54iQ/edit?usp=sharing"
 
             conn = connect()
             pvalue = conn.execute(f'SELECT * FROM "{pvalue_url}"')
             pvalue = pd.DataFrame(pvalue)
-
+            # st.write(pvalue)
             test1 = st.sidebar.radio("Pre-trained Models",('Reddit', 'Twitter', 'Google News',  'Wikipedia'))
 
             if(test1 == 'Reddit'):
-                data = pvalue.iloc[:,0:2]
+                data = pvalue.iloc[:,0:3]
                 data = data.dropna()
-                st.dataframe(data.style.format({'reddit': '{:.2E}'}), width=1024, height=768)
-
+                st.dataframe(data.style.format({'reddit_p_value': '{:.2E}'}), width=1024, height=768)
 
             elif(test1 == 'Twitter'):
-                data = pvalue.iloc[:,[0,2]]
+                data = pvalue.iloc[:,[0,3,4]]
                 data = data.dropna()
-                st.dataframe(data.style.format({'twitter': '{:.2E}'}))
+                st.dataframe(data.style.format({'twitter_p_value': '{:.2E}'}))
 
             elif(test1 == 'Google News'):
-                data = pvalue.iloc[:,[0,3]]
+                data = pvalue.iloc[:,[0,7,8]]
                 data = data.dropna()
-                st.dataframe(data.style.format({'gnews': '{:.2E}'}))
+                st.dataframe(data.style.format({'gnews_p_value': '{:.2E}'}))
 
             elif(test1 == 'Wikipedia'):
-                data = pvalue.iloc[:,[0,4]]
+                data = pvalue.iloc[:,[0,5,6]]
                 data = data.dropna()
-                st.dataframe(data.style.format({'wiki': '{:.2E}'}))
+                st.dataframe(data.style.format({'wiki_p_value': '{:.2E}'}))
 
 if (check == 'Hofstede'):
     Hofstede_dimensions = st.sidebar.selectbox('Select a Hofstede Dimension', ('Power Distance', 'Individualism vs Collectivism','Masculinity vs Femininity', 'Long Term vs Short Term Orientation','Indulgence vs Restraint','Uncertainty Avoidance'))
@@ -753,14 +753,10 @@ if (check == 'Hofstede'):
 
     length = len(left_polar_list_random) + len(left_polar_list_nearest_random) + len(left_polar_list_human) + len(left_polar_list_nearest_human)
     company_df.drop(company_df.iloc[:, 2:2 + (length) * 2], axis=1, inplace=True)
-
-
     hofstede_df = hofstede_df[hofstede_df.iloc[:, :] != "#NULL!"]
     hofstede_df.dropna(axis=0)
 
     # This merge the company dataframe and Hofstede dataframe over the common column Country
-    
-
     merged_df = pd.merge(company_df, hofstede_df, how='left', on='Country')
     ranking_list = []
     for i in range(1, len(merged_df[dim_index]) + 1):
@@ -834,6 +830,20 @@ if (check == 'Hofstede'):
     eval_df = pd.DataFrame(eval_data, index =["Random List", "Nearest Random List","Human Made List","Nearest to Human Made List"])
     eval_df.head()
 
+    if(Hofstede_dimensions == 'Power Distance'):
+        merged_df.drop(merged_df.columns[[-2, -3, -4, -5, -6]],axis=1,inplace=True)
+    elif(Hofstede_dimensions == 'Individualism vs Collectivism'):
+        merged_df.drop(merged_df.columns[[-2, -3, -4,-5, -7]],axis=1,inplace=True)
+    elif(Hofstede_dimensions == 'Masculinity vs Femininity'):
+        merged_df.drop(merged_df.columns[[-2, -3, -4, -6, -7]],axis=1,inplace=True)
+    elif(Hofstede_dimensions == 'Long Term vs Short Term Orientation'):
+        merged_df.drop(merged_df.columns[[-2, -4, -5, -6, -7]],axis=1,inplace=True)
+    elif(Hofstede_dimensions == 'Indulgence vs Restraint'):
+        merged_df.drop(merged_df.columns[[ -3, -4, -5, -6, -7]],axis=1,inplace=True)
+    elif(Hofstede_dimensions == 'Uncertainty Avoidance'):
+        merged_df.drop(merged_df.columns[[-2, -3, -5, -6, -7]],axis=1,inplace=True)
+
+    # st.write(merged_df.iloc[:, [-2, -3, -4, -5]])
     corr = merged_df.corr()
     st.write(corr.style.background_gradient(cmap='Pastel1', axis=None, vmin=-1, vmax=1).highlight_null(null_color='#f1f1f1').set_precision(2))
 
