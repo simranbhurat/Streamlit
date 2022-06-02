@@ -846,6 +846,8 @@ if (check == 'Hofstede'):
     # st.write(merged_df.iloc[:, [-2, -3, -4, -5]])
     corr = merged_df.corr()
     st.write(corr.style.background_gradient(cmap='Pastel1', axis=None, vmin=-1, vmax=1).highlight_null(null_color='#f1f1f1').set_precision(2))
+    st.write("H -> Human List")
+    st.writw("R -> Random List")
 
 if(check == 'PCA'):
     pre_trained = st.sidebar.selectbox("Select a pre-trained model", ('Wikipedia','Google News', 'Reddit', 'Twitter' ))
