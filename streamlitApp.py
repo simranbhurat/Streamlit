@@ -767,7 +767,7 @@ if (check == 'Hofstede'):
     correlation = st.sidebar.checkbox('Correlation')
     pshs = st.sidebar.checkbox('Polar score vs Hofstede score')
 
-    if(Correlation):
+    if(correlation):
         # Below are the correlation plot 
         fig1 = plt.figure(figsize = (10,7))
         plt.subplot(2, 2, 1)
