@@ -31,6 +31,9 @@ from plotly.subplots import make_subplots
 from sklearn.metrics import mean_absolute_error
 import plotly.express as px
 
+# This must be the first command in your app, and must be set only once
+st.set_page_config(layout="wide")
+
 def polar_list(list):
   
   right_polar_list = []
@@ -420,7 +423,7 @@ if (check == 'Bias'):
         )
 
         fig = go.Figure(data=[trace0, trace1, trace2, trace3], layout=layout)
-        st.plotly_chart(fig, height=800)
+        st.plotly_chart(fig)
 
     elif (company_or_country == 'Companies'):
 
@@ -597,7 +600,7 @@ if (check == 'Bias'):
             if(test1 == 'Reddit'):
                 data = pvalue.iloc[:,0:2]
                 data = data.dropna()
-                st.dataframe(data.style.format({'reddit': '{:.2E}'}))
+                st.dataframe(data.style.format({'reddit': '{:.2E}'}), width=1024, height=768)
 
 
             elif(test1 == 'Twitter'):
@@ -773,12 +776,27 @@ if (check == 'Hofstede'):
         fig1 = plt.figure(figsize = (10,7))
         plt.subplot(2, 2, 1)
         sns.regplot(x=merged_df[dim_ranking], y=merged_df["Polar Rank R"])
+        plt.xlabel('Ranking based on ' + str(Hofstede_dimensions.split('_', 1)[0]))
+        plt.ylabel('Polar Rank based on Random list')
         plt.subplot(2, 2, 2)
         sns.regplot(x=merged_df[dim_ranking], y=merged_df["Polar Rank Nearest R"])
+        plt.xlabel('Ranking based on ' + str(Hofstede_dimensions.split('_', 1)[0]))
+        plt.ylabel('Polar Rank based on nearest Random list')
         plt.subplot(2, 2, 3)
         sns.regplot(x=merged_df[dim_ranking], y=merged_df["Polar Rank H"])
+        plt.xlabel('Ranking based on ' + str(Hofstede_dimensions.split('_', 1)[0]))
+        plt.ylabel('Polar Rank based on Human list')
         plt.subplot(2, 2, 4)
         sns.regplot(x=merged_df[dim_ranking], y=merged_df["Polar Rank Nearest H"])
+        plt.xlabel('Ranking based on ' + str(Hofstede_dimensions.split('_', 1)[0]))
+        plt.ylabel('Polar Rank based on nearest Human list')
+        # set the spacing between subplots
+        plt.subplots_adjust(left=0.1,
+                            bottom=0.1, 
+                            right=0.9, 
+                            top=0.9, 
+                            wspace=0.4, 
+                            hspace=0.4)
         st.pyplot(fig1)
         
     if(pshs):
@@ -899,7 +917,7 @@ if(check == 'PCA'):
 
     new_df=pd.concat([common, company_url])  
     df_cluster=new_df.loc[:,new_df.columns!='name']          
-    dimension = st.sidebar.selectbox("Select PCA Dimensions", ('2D','3D' ))
+    dimension = st.sidebar.selectbox("Select Dimensions", ('2D','3D' ))
 
     if(dimension == '2D'):
         eps = st.sidebar.slider('Select epsilon', 0.0, 1.0, 0.4)
