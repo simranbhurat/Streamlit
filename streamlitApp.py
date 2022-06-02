@@ -835,7 +835,7 @@ if (check == 'Hofstede'):
     eval_df.head()
 
     corr = merged_df.corr()
-    st.write(corr.style.background_gradient(cmap='coolwarm', axis=None, vmin=-1, vmax=1).highlight_null(null_color='#f1f1f1').set_precision(2))
+    st.write(corr.style.background_gradient(cmap='Pastel1', axis=None, vmin=-1, vmax=1).highlight_null(null_color='#f1f1f1').set_precision(2))
 
 if(check == 'PCA'):
     pre_trained = st.sidebar.selectbox("Select a pre-trained model", ('Wikipedia','Google News', 'Reddit', 'Twitter' ))
