@@ -764,10 +764,10 @@ if (check == 'Hofstede'):
     merged_df = merged_df.sort_values(by=[dim_index], ascending=False)
     merged_df[dim_ranking] = ranking_list
 
-    correlation = st.sidebar.checkbox('correlation')
+    correlation = st.sidebar.checkbox('Correlation')
     pshs = st.sidebar.checkbox('Polar score vs Hofstede score')
 
-    if(correlation):
+    if(Correlation):
         # Below are the correlation plot 
         fig1 = plt.figure(figsize = (10,7))
         plt.subplot(2, 2, 1)
