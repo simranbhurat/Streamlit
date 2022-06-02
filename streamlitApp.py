@@ -840,7 +840,7 @@ if(check == 'PCA'):
                 common = "https://docs.google.com/spreadsheets/d/1vzvJqSRpnZtdjDOi1DAOCOvkBAsqokj83ZnSWBvbVLU/edit?usp=sharing"  
 
     elif(pre_trained == 'Google News'):
-        antonyms = st.sidebar.selectbox("Select a antonym set", ('Business Antonyms','Original Polar Antonyms' ))
+        antonyms = st.sidebar.selectbox("Select antonym list", ('Business Antonyms','Original Polar Antonyms' ))
         if(antonyms == 'Business Antonyms'):
             company_url = "https://docs.google.com/spreadsheets/d/1yKz9rcSH31DnNG989S_klSDcAqcTxq4i1Jhk73wl4ug/edit?usp=sharing"
             common_words = st.sidebar.selectbox("Add common words", ('100 Common words','1000 common words' ))
@@ -857,7 +857,7 @@ if(check == 'PCA'):
                 common = "https://docs.google.com/spreadsheets/d/10PgRzLfvhpWg3XH7YjTcazXv_o1OJfBtP7bnIZ1dfEY/edit?usp=sharing"
 
     elif(pre_trained == 'Reddit'):
-        antonyms = st.sidebar.selectbox("Select a antonym set", ('Business Antonyms','Original Polar Antonyms' ))
+        antonyms = st.sidebar.selectbox("Select antonym list", ('Business Antonyms','Original Polar Antonyms' ))
         if(antonyms == 'Business Antonyms'):
             company_url = "https://docs.google.com/spreadsheets/d/1-MvGo9EgEDTc9joPBLPtiAnMSTQHYm1MrETD5zp7Tfo/edit?usp=sharing"
             common_words = st.sidebar.selectbox("Add common words", ('100 Common words','1000 common words' ))
@@ -874,7 +874,7 @@ if(check == 'PCA'):
                 common = "https://docs.google.com/spreadsheets/d/1GSU-SXjWgiaN9sBg6PJUMcLli8xCjoo28a81peqzG-Y/edit?usp=sharing" 
 
     elif(pre_trained == 'Twitter'):
-        antonyms = st.sidebar.selectbox("Select a antonym set", ('Business Antonyms','Original Polar Antonyms' ))
+        antonyms = st.sidebar.selectbox("Select antonym list", ('Business Antonyms','Original Polar Antonyms' ))
         if(antonyms == 'Business Antonyms'):
             company_url = "https://docs.google.com/spreadsheets/d/13dh-3rnJ1HiU5V1Juoc2GDxXiFC6iWdaSWPsAieSVAM/edit?usp=sharing"
             common_words = st.sidebar.selectbox("Add common words", ('100 Common words','1000 common words' ))
