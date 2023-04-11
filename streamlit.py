@@ -5,7 +5,7 @@ from pandas.core.frame import DataFrame
 import plotly.express as px
 import pandas as pd
 import numpy as np
-from sklearn.metrics.pairwise import cosine_similarity
+sklearn.metrics.pairwise.cosine_similarity import cosine_similarity
 from numpy import linalg
 import time
 from random import shuffle
